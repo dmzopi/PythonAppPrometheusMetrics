@@ -2,7 +2,6 @@ import http.server
 import random
 import time
 from datetime import datetime
-
 from prometheus_client import start_http_server, Counter, Gauge, Summary, Histogram
 
 ### Counter metric
@@ -18,6 +17,7 @@ REQUEST_RESPOND_TIME = Summary('app_response_latency_seconds', 'Response latency
 ### Histogram metrics
 REQUEST_RESPOND_TIME_HIST = Histogram('app_response_latency_seconds_hist', 'Response latency in seconds', buckets=[0.1,0.5,1,2,3,4,5,10])
 
+APP_IP = '0.0.0.0'
 APP_PORT = 8000
 METRICS_PORT = 8001
 
@@ -44,7 +44,7 @@ class HandleRequests(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     # start prometheus server to export metrics
-    start_http_server(addr='10.20.30.10',port=METRICS_PORT)
+    start_http_server(addr=APP_IP,port=METRICS_PORT)
     # start main web server
-    server = http.server.HTTPServer(('10.20.30.10', APP_PORT), HandleRequests)
+    server = http.server.HTTPServer((APP_IP, APP_PORT), HandleRequests)
     server.serve_forever()
