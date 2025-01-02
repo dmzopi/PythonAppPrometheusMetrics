@@ -24,7 +24,7 @@ METRICS_PORT = 8001
 class HandleRequests(http.server.BaseHTTPRequestHandler):
     @REQUEST_IN_PROGRESS.track_inprogress() # Option 2 - use decorator
     @REQUEST_RESPOND_TIME.time() # Option 2 - use decorator
-    @REQUEST_RESPOND_TIME_HIST.time() # Does the same as summary, but store metrics in different buket depending of execution time taken
+    @REQUEST_RESPOND_TIME_HIST.time() # Does the same as summary, but store metrics in different bucket depending of execution time taken
     def do_GET(self):
         #start_time=time.time() # Option1 - manual time track
         #REQUEST_COUNT.inc()
@@ -36,7 +36,7 @@ class HandleRequests(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(bytes("<html><head><title>First Application</title></head><body style='color: #333; margin-top: 30px;'><center><h2>Welcome to our first Prometheus-Python application. " + str(self.reqdate) + "</center></h2></body></html>", "utf-8"))
         self.wfile.flush()  #actually send the response if not already done.
-        time.sleep(2) # Mimic the execution time
+        time.sleep(random.randint(0,5)) # Mimic the execution time
         #REQUEST_RESPOND_TIME.observe(time.time() - start_time) # Option1 - manual time track
         #REQUEST_LAST_SERVED.set(time.time()) # Option 1 - manual set
         REQUEST_LAST_SERVED.set_to_current_time() # Option 2 - use embedded function
