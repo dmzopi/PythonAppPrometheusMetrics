@@ -5,3 +5,4 @@ services:
     container_name: promapp
     ports:
     - "8000:8000"
+    - "8001:8001"
